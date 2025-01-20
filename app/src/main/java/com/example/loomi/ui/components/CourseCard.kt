@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -45,7 +46,7 @@ fun CourseCard(course: Course, onClick: () -> Unit) {
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Image for the course (circular avatar style)
+
             Image(
                 painter = painterResource(id = R.drawable.article1),
                 contentDescription = "Course image",
@@ -56,7 +57,6 @@ fun CourseCard(course: Course, onClick: () -> Unit) {
             )
             Spacer(modifier = Modifier.width(16.dp))
 
-            // Text section for course details
             Column(
                 modifier = Modifier.weight(1f)
             ) {
@@ -80,15 +80,34 @@ fun CourseCard(course: Course, onClick: () -> Unit) {
                     color = Color.Black.copy(alpha = 0.6f),
                 )
             }
-
-            // Progress bar (circular)
             Spacer(modifier = Modifier.width(16.dp))
             CircularProgressIndicator(
-                progress = 0.87f, // Example progress value (87%)
+                progress = 0.87f,
                 color = Color.Gray,
                 strokeWidth = 4.dp,
                 modifier = Modifier.size(40.dp)
             )
+        }
+    }
+}
+
+@Composable
+fun CourseList() {
+    Column {
+        repeat(5) {
+            CourseCard(
+                course = Course(
+                    id = it,
+                    title = "Learn Compose",
+                    description = "Learn Jetpack Compose",
+                    author = "Loomi",
+                    image = com.example.loomi.R.drawable.ic_launcher_background,
+                    progress = 50,
+                    lessonCount = 10
+                ),
+                onClick = {}
+            )
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }

@@ -1,3 +1,4 @@
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -20,6 +21,7 @@ fun Search(
     placeHolder : String,
 ){
     OutlinedTextField(
+        modifier = Modifier.fillMaxWidth(),
         value = text,
         onValueChange = {
             onTextChange(it)

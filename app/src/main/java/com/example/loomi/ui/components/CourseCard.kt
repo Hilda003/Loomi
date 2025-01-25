@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -79,14 +80,17 @@ fun CourseCard(course: Course, onClick: () -> Unit) {
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.Black.copy(alpha = 0.6f),
                 )
+                Spacer(modifier = Modifier.width(16.dp))
+                LinearProgressIndicator(
+                    progress = 0.2f,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                    color = Color(0xFF708D68),
+                    trackColor = Color(0xFFECECEC)
+                )
             }
-            Spacer(modifier = Modifier.width(16.dp))
-            CircularProgressIndicator(
-                progress = 0.87f,
-                color = Color.Gray,
-                strokeWidth = 4.dp,
-                modifier = Modifier.size(40.dp)
-            )
+
         }
     }
 }
@@ -107,7 +111,7 @@ fun CourseList() {
                 ),
                 onClick = {}
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(12.dp))
         }
     }
 }

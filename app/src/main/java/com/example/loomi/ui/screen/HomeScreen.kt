@@ -14,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.loomi.data.model.Article
 import com.example.loomi.data.model.Course
 import com.example.loomi.ui.components.CourseCard
 import com.example.loomi.ui.components.GreetingSection
@@ -50,7 +51,15 @@ modifier: Modifier = Modifier
             lessonCount = 10
         ), onClick = {})
         Spacer(modifier = Modifier.padding(16.dp))
-        RecommendationArticleSection(articles = listOf())
+        RecommendationArticleSection(articles = listOf(
+            Article(
+                id = 1,
+                title = "Learn Compose",
+                description = "Learn Jetpack Compose",
+                author = "Loomi",
+                readTime = 5
+            )
+        ))
     }
 }
 

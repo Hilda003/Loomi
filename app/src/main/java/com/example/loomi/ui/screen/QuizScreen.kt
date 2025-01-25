@@ -14,6 +14,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.loomi.ui.components.OptionsSection
+import com.example.loomi.ui.components.ProgressBar
+import com.example.loomi.ui.components.QuestionSection
 
 @Composable
 fun QuizScreen() {
@@ -25,7 +28,9 @@ fun QuizScreen() {
         TopBar()
         ProgressBar()
         QuestionSection()
+        Spacer(modifier = Modifier.height(22.dp))
         OptionsSection()
+        Spacer(modifier = Modifier.height(46.dp))
         NextButton()
     }
 }
@@ -47,48 +52,6 @@ fun TopBar() {
     }
 }
 
-@Composable
-fun ProgressBar() {
-    LinearProgressIndicator(
-        progress = 0.2f,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 16.dp),
-        color = Color(0xFF708D68),
-        trackColor = Color(0xFFECECEC)
-    )
-}
-
-@Composable
-fun QuestionSection() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 16.dp)
-            .background(color = Color(0xFFEDE5D6), shape = RoundedCornerShape(8.dp)),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "Lorem ipsum lorem",
-            fontSize = 18.sp,
-            modifier = Modifier.padding(16.dp),
-            textAlign = TextAlign.Center
-        )
-    }
-}
-
-@Composable
-fun OptionsSection() {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        OptionItem(text = "Lorem", isSelected = false)
-        OptionItem(text = "Lorem", isSelected = false)
-        OptionItem(text = "Lorem", isSelected = true)
-        OptionItem(text = "Lorem", isSelected = false)
-    }
-}
 
 @Composable
 fun OptionItem(text: String, isSelected: Boolean) {
@@ -111,17 +74,22 @@ fun OptionItem(text: String, isSelected: Boolean) {
 
 @Composable
 fun NextButton() {
-    Button(
-        onClick = { /* TODO: Handle next action */ },
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 16.dp),
-        shape = RoundedCornerShape(8.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4A6242))
+        horizontalArrangement = Arrangement.End
     ) {
-        Text(text = "Next", color = Color.White)
+        Button(
+            onClick = { /* TODO: Handle next action */ },
+            shape = RoundedCornerShape(8.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4A6242))
+        ) {
+            Text(text = "Next", color = Color.White)
+        }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

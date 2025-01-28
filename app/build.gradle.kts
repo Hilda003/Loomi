@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -65,6 +66,14 @@ dependencies {
     implementation(libs.androidx.material)
     implementation(libs.material)
     implementation(libs.material3)
+
+//    firebase
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.bom)
+    implementation(libs.firebase.auth)
+
+//    ViewModel
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

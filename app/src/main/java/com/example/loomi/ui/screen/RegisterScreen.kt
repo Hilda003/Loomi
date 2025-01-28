@@ -1,5 +1,7 @@
 package com.example.loomi.ui.screen
 
+import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -15,11 +17,34 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.loomi.R
+import com.example.loomi.ViewModelFactory
+import com.example.loomi.data.model.Resource
+import com.example.loomi.data.repository.FirebaseAuthRepository
 import com.example.loomi.ui.components.InputField
+import com.example.loomi.ui.navigation.Screen
+import com.example.loomi.viewmodel.RegisterViewModel
 
+@SuppressLint("ShowToast")
 @Composable
-fun SignUpScreen() {
+fun RegisterScreen(
+    firebaseAuthRepository: FirebaseAuthRepository,
+    navController: NavHostController
+) {
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var name by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
+    var termsChecked by remember { mutableStateOf(false) }
+    var isLoading by remember { mutableStateOf(false) }
+
+    val registerViewModel: RegisterViewModel = viewModel(
+        factory = ViewModelFactory(firebaseAuthRepository)
+    )
+    val registerState by registerViewModel.registerState.collectAsState()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -49,12 +74,6 @@ fun SignUpScreen() {
         )
 
         Spacer(modifier = Modifier.height(16.dp))
-
-        var name by remember { mutableStateOf("") }
-        var email by remember { mutableStateOf("") }
-        var password by remember { mutableStateOf("") }
-        var passwordVisible by remember { mutableStateOf(false) }
-        var termsChecked by remember { mutableStateOf(false) }
 
         InputField(
             label = "Name",
@@ -92,6 +111,7 @@ fun SignUpScreen() {
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth(),
 //            horizontalArrangement = Arrangement.End
         ) {
             Checkbox(
@@ -105,7 +125,10 @@ fun SignUpScreen() {
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { /* TODO: Handle Sign Up */ },
+            onClick = {
+                isLoading = true
+                      registerViewModel.register(email, password)
+            },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4A6242))
         ) {
@@ -116,21 +139,38 @@ fun SignUpScreen() {
 
         Row(
             horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = "Already have an account? ", color = Color.Gray)
-            TextButton(onClick = { /* TODO: Handle Sign In */ }) {
+            TextButton(onClick = {
+                navController.navigate(Screen.LoginScreen.route)
+
+            }) {
                 Text(text = "Sign In", color = Color(0xFF4A6242))
             }
+
         }
+        when (registerState) {
+            is Resource.Loading -> {
+                CircularProgressIndicator()
+            }
+            is Resource.Success -> {
+                navController.navigate(Screen.HomeScreen.route)
+                registerViewModel.resetState()
+            }
+            is Resource.Error -> {
+//                Text(text = "Error: ${(registerState as Resource.Error).message}")
+                Toast.makeText(
+                    navController.context,
+                    (registerState as Resource.Error).message,
+                    Toast.LENGTH_SHORT
+                )
+                registerViewModel.resetState()
+
+            }
+            is Resource.Idle -> { }
+        }
+
     }
-}
-
-
-
-
-@Preview(showBackground = true)
-@Composable
-fun SignUpScreenPreview() {
-    SignUpScreen()
 }

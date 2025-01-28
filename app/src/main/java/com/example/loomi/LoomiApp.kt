@@ -1,7 +1,12 @@
 package com.example.loomi
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
@@ -31,6 +36,8 @@ import com.example.loomi.ui.screen.HomeScreen
 import com.example.loomi.ui.screen.ProfileScreen
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -38,7 +45,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.*
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.*
-
+import com.example.loomi.data.repository.FirebaseAuthRepository
+import com.example.loomi.ui.screen.LoginScreen
+import com.example.loomi.ui.screen.RegisterScreen
+import com.google.firebase.auth.FirebaseAuth
 
 
 @Composable
@@ -46,15 +56,22 @@ fun LoomiApp(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
 ) {
+    val firebaseAuth = FirebaseAuth.getInstance()
+    val firebaseAuthRepository = FirebaseAuthRepository(firebaseAuth)
     Scaffold(
         bottomBar = {
-            BottomBar(navController) // Bottom bar with dynamic icons
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentRoute = navBackStackEntry?.destination?.route
+
+            if (currentRoute != Screen.RegisterScreen.route && currentRoute != Screen.LoginScreen.route) {
+                BottomBar(navController)
+            }
         },
         modifier = modifier
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.HomeScreen.route,
+            startDestination = Screen.RegisterScreen.route,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.HomeScreen.route) {
@@ -65,6 +82,12 @@ fun LoomiApp(
             }
             composable(Screen.ProfileScreen.route) {
                 ProfileScreen()
+            }
+            composable(Screen.LoginScreen.route) {
+                LoginScreen(navController = navController, firebaseAuthRepository = firebaseAuthRepository)
+            }
+            composable(Screen.RegisterScreen.route) {
+                RegisterScreen(navController = navController, firebaseAuthRepository = firebaseAuthRepository)
             }
         }
     }
@@ -99,35 +122,50 @@ private fun BottomBar(
         ),
     )
 
-    BottomNavigation(
-        modifier = modifier,
-    ) {
-        navigationItems.map { item ->
-            BottomNavigationItem(
-                icon = {
-                    Icon(
-                        painter = if (currentRoute == item.screen.route) item.selectedIcon else item.unselectedIcon,
-                        contentDescription = item.title,
-                        modifier = Modifier.size(24.dp)
-                    )
-                },
-                label = {
-                    Text(
-                        text = item.title,
-                        fontSize = 11.sp
-                    )
-                },
-                selected = currentRoute == item.screen.route,
-                onClick = {
-                    navController.navigate(item.screen.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+    Box(modifier = modifier
+        .fillMaxWidth(),
+        contentAlignment = Alignment.BottomCenter) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = Color.White)
+                .padding(start = 24.dp, end = 24.dp, bottom = 24.dp),
+            shape = RoundedCornerShape(8.dp),
+        ){
+            BottomNavigation(
+                modifier = modifier.navigationBarsPadding(),
+                backgroundColor = Color.Transparent,
+                elevation = 0.dp
+            ) {
+                navigationItems.map { item ->
+                    BottomNavigationItem(
+                        icon = {
+                            Icon(
+                                painter = if (currentRoute == item.screen.route) item.selectedIcon else item.unselectedIcon,
+                                contentDescription = item.title,
+                                modifier = Modifier.size(27.dp)
+                            )
+                        },
+                        label = {
+                            Text(
+                                text = item.title,
+                                fontSize = 12.sp
+                            )
+                        },
+                        selected = currentRoute == item.screen.route,
+                        onClick = {
+                            navController.navigate(item.screen.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                restoreState = true
+                                launchSingleTop = true
+                            }
                         }
-                        restoreState = true
-                        launchSingleTop = true
-                    }
+                    )
                 }
-            )
+            }
         }
+
     }
 }

@@ -7,10 +7,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,7 +25,11 @@ import com.example.loomi.data.model.Article
 
 @Composable
 fun ArticleCard(article: Article) {
-    Card(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+
+    ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Image(painter = painterResource(id = R.drawable.article1), contentDescription = "Image Article", modifier = Modifier.fillMaxWidth())
             Text(text = article.title, fontWeight = FontWeight.Bold)
@@ -35,7 +41,7 @@ fun ArticleCard(article: Article) {
 @Composable
 fun RecommendationArticleSection(articles: List<Article>) {
     Column {
-        Text(text = "Recommendation Article", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+        Text(text = "Recommendation Article", fontWeight = FontWeight.Bold, fontSize = 20.sp, color = colorResource(id = R.color.gray_dark))
         Spacer(modifier = Modifier.height(8.dp))
         articles.forEach { article ->
             ArticleCard(article)

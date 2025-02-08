@@ -1,6 +1,7 @@
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,24 +17,23 @@ import com.example.loomi.R
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.unit.sp
 
 @Composable
-fun CompleteCard(
-
-) {
+fun CompleteCard() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFF90A892))
-            .clip(RoundedCornerShape(16.dp))
-            .padding(vertical = 16.dp),
-        horizontalArrangement = Arrangement.SpaceAround,
+            .background(Color(0xFF708D68), shape = RoundedCornerShape(16.dp)) // Warna hijau dengan rounded corners
+            .padding(horizontal = 24.dp, vertical = 16.dp), // Padding kiri kanan
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-
         CompletedItem(
             iconRes = R.drawable.ic_check_circle,
-            text = "Completed\n10 materials"
+            title = "Completed",
+            subtitle = "10 hours"
         )
 
         Divider(
@@ -45,31 +45,42 @@ fun CompleteCard(
 
         CompletedItem(
             iconRes = R.drawable.ic_schedule,
-            text = "Completed\n10 hours"
+            title = "Completed",
+            subtitle = "10 hours"
         )
     }
 }
 
 @Composable
-fun CompletedItem(iconRes: Int, text: String) {
+fun CompletedItem(iconRes: Int, title: String, subtitle: String) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Image(
-            painter = painterResource(id = iconRes),
-            contentDescription = null,
-            modifier = Modifier.size(24.dp)
-        )
+        Box(
+            modifier = Modifier
+                .size(40.dp) // Ukuran lingkaran
+                .background(Color.White, shape = CircleShape), // Background lingkaran putih
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                painter = painterResource(id = iconRes),
+                contentDescription = null,
+                modifier = Modifier.size(20.dp), // Ukuran ikon lebih kecil agar pas di lingkaran
+                colorFilter = ColorFilter.tint(Color(0xFF708D68)) // Warna ikon hijau gelap
+            )
+        }
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = text,
+            text = title,
             color = Color.White,
-            textAlign = TextAlign.Center,
-            style = TextStyle(
-                fontWeight = FontWeight.Medium,
-                color = Color.White
-            )
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 14.sp
+        )
+        Text(
+            text = subtitle,
+            color = Color.White.copy(alpha = 0.8f),
+            fontSize = 12.sp
         )
     }
 }

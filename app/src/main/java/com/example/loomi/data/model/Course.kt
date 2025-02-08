@@ -1,7 +1,5 @@
 package com.example.loomi.data.model
 
-import androidx.compose.ui.graphics.vector.ImageVector
-
 data class Course(
     val id: Int,
     val title: String,

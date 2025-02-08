@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,8 +37,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.loomi.R
 import com.example.loomi.ViewModelFactory
 import com.example.loomi.data.model.Resource
@@ -47,6 +46,7 @@ import com.example.loomi.data.repository.FirebaseAuthRepository
 import com.example.loomi.ui.components.InputField
 import com.example.loomi.ui.navigation.Screen
 import com.example.loomi.viewmodel.LoginViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 
 @Composable
@@ -57,7 +57,6 @@ fun LoginScreen(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
-    var termsChecked by remember { mutableStateOf(false) }
     var isLoading by remember { mutableStateOf(false) }
 
     val loginViewModel: LoginViewModel = viewModel(
@@ -166,4 +165,10 @@ fun LoginScreen(
             } is Resource.Idle -> {}
         }
     }
+}
+
+@Preview
+@Composable
+fun LoginScreenPreview() {
+    LoginScreen(FirebaseAuthRepository(FirebaseAuth.getInstance()), rememberNavController())
 }

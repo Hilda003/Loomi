@@ -4,15 +4,15 @@ import com.example.loomi.constant.Const
 
 sealed class Screen(val route: String) {
 
-    object HomeScreen : Screen(Const.Cons.HOME)
-    object CourseScreen : Screen(Const.Cons.COURSE)
-    object ProfileScreen : Screen(Const.Cons.PROFILE)
-    object LoginScreen : Screen(Const.Cons.LOGIN)
+    data object HomeScreen : Screen(Const.Cons.HOME)
+    data object CourseScreen : Screen(Const.Cons.COURSE)
+    data object ProfileScreen : Screen(Const.Cons.PROFILE)
+    data object LoginScreen : Screen(Const.Cons.LOGIN)
 
-    object RegisterScreen : Screen(Const.Cons.REGISTER)
+    data object RegisterScreen : Screen(Const.Cons.REGISTER)
 
     // Dynamic route for DetailLearn
-    object DetailCourse : Screen(Const.Cons.DETAIL_COURSE) {
+    data object DetailCourse : Screen(Const.Cons.DETAIL_COURSE) {
         fun createRoute(courseId: Int) = "home/$courseId"  // Dynamic route with parameter
     }
 }

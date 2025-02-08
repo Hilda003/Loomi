@@ -1,6 +1,5 @@
 package com.example.loomi.ui.components
 
-import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -14,7 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -24,10 +23,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.loomi.R
 import com.example.loomi.data.model.Course
 
@@ -39,11 +41,13 @@ fun CourseCard(course: Course, onClick: () -> Unit) {
             .fillMaxWidth()
             .clickable { onClick() },
 //        elevation = 4.Dp,
-        shape = RoundedCornerShape(8.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
+        shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
         Row(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(13.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -81,15 +85,40 @@ fun CourseCard(course: Course, onClick: () -> Unit) {
                     color = Color.Black.copy(alpha = 0.6f),
                 )
                 Spacer(modifier = Modifier.width(16.dp))
-                LinearProgressIndicator(
-                    progress = 0.2f,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp),
-                    color = Color(0xFF708D68),
-                    trackColor = Color(0xFFECECEC)
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    LinearProgressIndicator(
+                        progress = course.progress / 100f,
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(6.dp)
+                            .clip(RoundedCornerShape(50)),
+
+                        color = Color(0xFF708D68),
+                        trackColor = Color(0xFFECECEC)
+                    )
+
+                    Text(
+                        modifier = Modifier.padding(start = 12.dp),
+                        text = "${course.progress}%",
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = colorResource(id = R.color.gray)
+                    )
+
+                }
+
+
             }
+//            IconButton(onClick = { /* Handle menu click */ }) {
+//                Icon(
+//                    imageVector = Icons.Default.MoreVert,
+//                    contentDescription = "More options",
+//                    tint = Color.Black.copy(alpha = 0.6f)
+//                )
+//            }
 
         }
     }
@@ -105,7 +134,7 @@ fun CourseList() {
                     title = "Learn Compose",
                     description = "Learn Jetpack Compose",
                     author = "Loomi",
-                    image = com.example.loomi.R.drawable.ic_launcher_background,
+                    image = R.drawable.ic_launcher_background,
                     progress = 50,
                     lessonCount = 10
                 ),
@@ -126,7 +155,7 @@ fun CourseCardPreview() {
             title = "Learn Compose",
             description = "Learn Jetpack Compose",
             author = "Loomi",
-            image = com.example.loomi.R.drawable.ic_launcher_background,
+            image = R.drawable.ic_launcher_background,
             progress = 50,
             lessonCount = 10
         ),

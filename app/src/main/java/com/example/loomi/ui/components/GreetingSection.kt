@@ -25,7 +25,8 @@ fun GreetingSection(name : String) {
                 tint = colorResource(id = R.color.yellow),
                 modifier = Modifier.size(20.dp)
             )
-            Text(text = " Hallo, $name", color = colorResource(id = R.color.gray_light), fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
+            Text(text = " Hallo, $name", color = colorResource(id = R.color.gray_dark), fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                fontSize = 16.sp)
         }
         Text("Great to see you again!", color = Color.Gray, fontSize = 10.sp)
     }

@@ -9,44 +9,34 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.loomi.data.repository.FirebaseAuthRepository
 import com.example.loomi.ui.navigation.Navigation
 import com.example.loomi.ui.navigation.Screen
 import com.example.loomi.ui.screen.CourseScreen
 import com.example.loomi.ui.screen.HomeScreen
-import com.example.loomi.ui.screen.ProfileScreen
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.navigation.*
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.*
-import com.example.loomi.data.repository.FirebaseAuthRepository
 import com.example.loomi.ui.screen.LoginScreen
+import com.example.loomi.ui.screen.ProfileScreen
 import com.example.loomi.ui.screen.RegisterScreen
 import com.google.firebase.auth.FirebaseAuth
 
@@ -104,9 +94,9 @@ private fun BottomBar(
     val navigationItems = listOf(
         Navigation(
             title = stringResource(R.string.home),
-            selectedIcon = painterResource(id = R.drawable.ic_home_selected), // Icon for selected state
-            unselectedIcon = painterResource(id = R.drawable.ic_home_unselected), // Icon for unselected state
-            screen = Screen.HomeScreen // Correct screen reference
+            selectedIcon = painterResource(id = R.drawable.ic_home_selected),
+            unselectedIcon = painterResource(id = R.drawable.ic_home_unselected),
+            screen = Screen.HomeScreen 
         ),
         Navigation(
             title = stringResource(R.string.Courses),
@@ -123,18 +113,21 @@ private fun BottomBar(
     )
 
     Box(modifier = modifier
-        .fillMaxWidth(),
+        .fillMaxWidth()
+        .navigationBarsPadding()
+        .background(color = Color.White),
         contentAlignment = Alignment.BottomCenter) {
         Card(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(0.9f)
                 .background(color = Color.White)
                 .padding(start = 24.dp, end = 24.dp, bottom = 24.dp),
-            shape = RoundedCornerShape(8.dp),
+            shape = RoundedCornerShape(16.dp),
+            elevation = CardDefaults.cardElevation(4.dp)
         ){
             BottomNavigation(
                 modifier = modifier.navigationBarsPadding(),
-                backgroundColor = Color.Transparent,
+                backgroundColor = Color.White,
                 elevation = 0.dp
             ) {
                 navigationItems.map { item ->
@@ -168,4 +161,10 @@ private fun BottomBar(
         }
 
     }
+}
+
+@Preview
+@Composable
+fun LoomiAppPreview() {
+    LoomiApp()
 }

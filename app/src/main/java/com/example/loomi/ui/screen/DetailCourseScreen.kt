@@ -12,8 +12,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,11 +23,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.loomi.R
 import com.example.loomi.ui.components.PlaylistContent
+import com.example.loomi.ui.components.TabSwitch
 
 
 @Composable
@@ -51,6 +49,7 @@ fun CourseDetailScreen() {
         // Course Image
         Box(
             modifier = Modifier
+                .padding(10.dp)
                 .fillMaxWidth()
                 .height(200.dp)
                 .clip(RoundedCornerShape(8.dp))
@@ -61,34 +60,11 @@ fun CourseDetailScreen() {
 
         // Tab Row for Playlist and Description
         var selectedTab by remember { mutableIntStateOf(0) }
-        TabRow(
-            selectedTabIndex = selectedTab,
-            contentColor = colorResource(id = R.color.gray),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Tab(
-                selected = selectedTab == 0,
-                onClick = { selectedTab = 0 },
-                text = {
-                    Text(text = "Playlist", style = if (selectedTab == 0) MaterialTheme.typography.bodyLarge.copy(
-                        fontWeight = FontWeight.Bold
-                    ) else MaterialTheme.typography.bodyLarge)
-                }
-            )
-            Tab(
-                selected = selectedTab == 1,
-                onClick = { selectedTab = 1 },
-                text = {
-                    Text(
-                        text = "Description",
-                        style = if (selectedTab == 1) MaterialTheme.typography.bodyLarge.copy(
-                            fontWeight = FontWeight.Bold
-                        ) else MaterialTheme.typography.bodyLarge
-                    )
-                }
-            )
-        }
-
+        TabSwitch(
+            selectedIndex = selectedTab,
+            items = listOf("Playlist", "Description"),
+            onSelectionChange = { selectedTab = it }
+        )
         Spacer(modifier = Modifier.height(16.dp))
 
         if (selectedTab == 0) {
@@ -98,6 +74,8 @@ fun CourseDetailScreen() {
         }
     }
 }
+
+
 
 @Composable
 fun DescriptionContent() {

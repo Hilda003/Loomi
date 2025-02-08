@@ -1,11 +1,15 @@
 package com.example.loomi.ui.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -17,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.loomi.R
 
@@ -55,11 +60,24 @@ fun PlaylistItem(title: String, duration: String, isLocked: Boolean) {
             )
         }
 
-        Icon(
-            painter = painterResource(id = R.drawable.ic_lock), // Replace with lock icon
-            contentDescription = null,
-            tint = if (isLocked) Color.Gray else Color.Gray
-        )
+        if (isLocked) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .size(32.dp)
+                    .background(
+                        Color(0xFFD3D3D3),
+                        shape = CircleShape
+                    )
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_lock),
+                    contentDescription = "Locked",
+                    tint = colorResource(id = R.color.gray_light),
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+        }
     }
 }
 
@@ -83,4 +101,11 @@ fun PlaylistContent() {
             Spacer(modifier = Modifier.height(8.dp))
         }
     }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun PlaylistItemPreview() {
+    PlaylistContent()
 }
